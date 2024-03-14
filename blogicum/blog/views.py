@@ -14,7 +14,6 @@ def post_detail(request, post_id):
 
 
 def category_posts(request, category_slug):
-
     return render(request, 'blog/category.html',
                   {'posts_category': [post for post in posts
                                       if post['category'] == category_slug],
@@ -64,11 +63,4 @@ posts = [
     },
 ]
 
-posts_by_address = {address['id']: {'location': address['location'],
-                                    'date': address['date'],
-                                    'category': address['category'],
-                                    'text': address['text']
-                                    } for address in posts}
-
-if __name__ == '__main__':
-    print(posts_by_address)
+posts_by_address = {post['id']: post for post in posts}
