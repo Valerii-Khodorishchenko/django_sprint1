@@ -154,4 +154,4 @@ yap_testing
 html/img/img/
 
 # @charset "UTF-8";/*!
-blogicum\static_dev\css\bootstrap.min.css
+blogicum/static_dev/css/bootstrap.min.css

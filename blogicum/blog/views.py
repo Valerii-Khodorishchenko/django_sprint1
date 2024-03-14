@@ -1,28 +1,23 @@
 from django.shortcuts import render
+from django.http import Http404
 
 
 def index(request):
-    template = 'blog/index.html'
-    context = {'posts': posts}
-    return render(request, template, context)
+    return render(request, 'blog/index.html', {'posts': posts})
 
 
 def post_detail(request, post_id):
-    template = 'blog/detail.html'
-    context = {'post': posts[post_id]}
-    return render(request, template, context)
+    for post in posts:
+        if post['id'] == post_id:
+            return render(request, 'blog/detail.html', {'post': post})
+    raise Http404
 
 
 def category_posts(request, category_slug):
-    template = 'blog/category.html'
-    posts_category = []
-    for post in posts:
-        if post['category'] == category_slug:
-            posts_category.append(post)
-    context = {
-        'posts_category': posts_category,
-        'title': category_slug}
-    return render(request, template, context)
+    category = [post for post in posts if post['category'] == category_slug]
+    return render(request, 'blog/category.html',
+                  {'posts_category': category,
+                   'title': category_slug})
 
 
 posts = [
