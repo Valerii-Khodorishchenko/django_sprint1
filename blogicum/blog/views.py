@@ -8,16 +8,18 @@ def index(request):
 
 def post_detail(request, post_id):
     if post_id not in posts_by_address:
-        raise Http404(f'Ресурс по запросу {request} отсутствует')
-    return render(request, 'blog/detail.html',
-                  {'post': posts_by_address[post_id]})
+        raise Http404(f'Ресурс по запросу {post_id} отсутствует')
+    return render(request, 'blog/detail.html', {
+        'post': posts_by_address[post_id],
+    })
 
 
 def category_posts(request, category_slug):
-    return render(request, 'blog/category.html',
-                  {'posts_category': [post for post in posts
-                                      if post['category'] == category_slug],
-                   'title': category_slug})
+    return render(request, 'blog/category.html', {
+        'posts_category': [post for post in posts
+                           if post['category'] == category_slug],
+        'title': category_slug,
+    })
 
 
 posts = [
