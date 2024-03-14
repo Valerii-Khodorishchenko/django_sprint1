@@ -1,5 +1,5 @@
-from django.shortcuts import render
 from django.http import Http404
+from django.shortcuts import render
 
 
 def index(request):
@@ -7,16 +7,17 @@ def index(request):
 
 
 def post_detail(request, post_id):
-    for post in posts:
-        if post['id'] == post_id:
-            return render(request, 'blog/detail.html', {'post': post})
-    raise Http404
+    if post_id not in posts_by_address:
+        raise Http404(f'Ресурс по запросу {request} отсутствует')
+    return render(request, 'blog/detail.html',
+                  {'post': posts_by_address[post_id]})
 
 
 def category_posts(request, category_slug):
-    category = [post for post in posts if post['category'] == category_slug]
+
     return render(request, 'blog/category.html',
-                  {'posts_category': category,
+                  {'posts_category': [post for post in posts
+                                      if post['category'] == category_slug],
                    'title': category_slug})
 
 
@@ -62,3 +63,12 @@ posts = [
                 укутывал их, чтобы не испортились от дождя.''',
     },
 ]
+
+posts_by_address = {address['id']: {'location': address['location'],
+                                    'date': address['date'],
+                                    'category': address['category'],
+                                    'text': address['text']
+                                    } for address in posts}
+
+if __name__ == '__main__':
+    print(posts_by_address)
